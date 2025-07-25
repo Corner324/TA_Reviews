@@ -72,8 +72,8 @@ graph TB
 
 ```bash
 # Клонирование репозитория
-git clone <repository-url>
-cd reviews-sentiment-service
+git clone https://github.com/Corner324/TA_Reviews.git
+cd TA_Reviews
 
 # Запуск с Docker Compose
 docker-compose up -d
