@@ -1,2 +1,2 @@
-# Reviews Sentiment Service
-# Main application package
+# Сервис анализа сентимента отзывов
+# Основный пакет приложения

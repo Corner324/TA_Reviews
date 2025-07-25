@@ -32,25 +32,25 @@ class ReviewService:
         Raises:
             Exception: If creation fails
         """
-        # Analyze sentiment
+        # Анализируем сентимент
         sentiment = self.sentiment_service.analyze_sentiment(review_data.text)
 
-        # Prepare review data
+        # Подготавливаем данные отзыва
         review_dict = {
             "text": review_data.text,
             "sentiment": sentiment,
-            "created_at": datetime.utcnow().isoformat()
+            "created_at": datetime.utcnow().isoformat(),
         }
 
-        # Create review in database
+        # Создаем отзыв в базе данных
         db_review = self.repository.create(review_dict)
 
-        # Return response
+        # Возвращаем ответ
         return ReviewResponse(
             id=db_review.id,
             text=db_review.text,
             sentiment=db_review.sentiment,
-            created_at=db_review.created_at
+            created_at=db_review.created_at,
         )
 
     def get_reviews(self, sentiment: str = None) -> list[ReviewResponse]:
@@ -63,20 +63,20 @@ class ReviewService:
         Returns:
             List of review responses
         """
-        # Validate sentiment parameter
+        # Проверяем параметр сентимента
         if sentiment and sentiment not in ["positive", "negative", "neutral"]:
             raise ValueError("Invalid sentiment value")
 
-        # Get reviews from repository
+        # Получаем отзывы из репозитория
         db_reviews = self.repository.get_all(sentiment_filter=sentiment)
 
-        # Convert to response objects
+        # Преобразуем в объекты ответа
         return [
             ReviewResponse(
                 id=review.id,
                 text=review.text,
                 sentiment=review.sentiment,
-                created_at=review.created_at
+                created_at=review.created_at,
             )
             for review in db_reviews
         ]

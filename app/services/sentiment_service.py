@@ -8,18 +8,38 @@ from app.ml.sentiment_model import SentimentMLModel
 class SentimentService:
     """Service for analyzing sentiment of text using ML and dictionary approaches."""
 
-    # Positive words dictionary (fallback method)
+    # Словарь позитивных слов (резервный метод)
     POSITIVE_WORDS: set[str] = {
-        "хорош", "люблю", "отлично", "супер", "замечательно",
-        "прекрасно", "великолепно", "нравится", "классно",
-        "отличный", "хороший", "превосходно", "восхитительно"
+        "хорош",
+        "люблю",
+        "отлично",
+        "супер",
+        "замечательно",
+        "прекрасно",
+        "великолепно",
+        "нравится",
+        "классно",
+        "отличный",
+        "хороший",
+        "превосходно",
+        "восхитительно",
     }
 
-    # Negative words dictionary (fallback method)
+    # Словарь негативных слов (резервный метод)
     NEGATIVE_WORDS: set[str] = {
-        "плохо", "ненавиж", "ужасно", "отвратительно", "кошмар",
-        "не нравится", "плохой", "худший", "провал", "ужас",
-        "отвратительный", "кошмарный", "ненавижу"
+        "плохо",
+        "ненавиж",
+        "ужасно",
+        "отвратительно",
+        "кошмар",
+        "не нравится",
+        "плохой",
+        "худший",
+        "провал",
+        "ужас",
+        "отвратительный",
+        "кошмарный",
+        "ненавижу",
     }
 
     def __init__(self, use_ml: bool = True):
@@ -59,16 +79,16 @@ class SentimentService:
         if not text:
             return "neutral"
 
-        # Try ML approach first
+        # Пробуем ML подход сначала
         if self.use_ml and self.ml_model:
             try:
                 return self.ml_model.predict(text)
             except Exception as e:
                 print(f"ML prediction failed: {e}, falling back to dictionary")
-                # Fall back to dictionary approach
+                # Переходим к словарному подходу
                 pass
 
-        # Dictionary approach (fallback)
+        # Словарный подход (резервный)
         return self._analyze_with_dictionary(text)
 
     def analyze_sentiment_detailed(self, text: str) -> dict[str, Any]:
@@ -85,10 +105,10 @@ class SentimentService:
             return {
                 "sentiment": "neutral",
                 "method": "empty_text",
-                "probabilities": {"positive": 0.33, "negative": 0.33, "neutral": 0.34}
+                "probabilities": {"positive": 0.33, "negative": 0.33, "neutral": 0.34},
             }
 
-        # Try ML approach first
+        # Пробуем ML подход сначала
         if self.use_ml and self.ml_model:
             try:
                 sentiment = self.ml_model.predict(text)
@@ -96,18 +116,14 @@ class SentimentService:
                 return {
                     "sentiment": sentiment,
                     "method": "machine_learning",
-                    "probabilities": probabilities
+                    "probabilities": probabilities,
                 }
             except Exception as e:
                 print(f"ML prediction failed: {e}")
 
-        # Dictionary approach
+        # Словарный подход
         sentiment = self._analyze_with_dictionary(text)
-        return {
-            "sentiment": sentiment,
-            "method": "dictionary",
-            "probabilities": None
-        }
+        return {"sentiment": sentiment, "method": "dictionary", "probabilities": None}
 
     def _analyze_with_dictionary(self, text: str) -> str:
         """
@@ -119,16 +135,18 @@ class SentimentService:
         Returns:
             Sentiment: 'positive', 'negative', or 'neutral'
         """
-        # Normalize text to lowercase
+        # Нормализуем текст в нижний регистр
         normalized_text = text.lower()
 
-        # Count positive and negative words
-        positive_count = sum(1 for word in self.POSITIVE_WORDS
-                           if word in normalized_text)
-        negative_count = sum(1 for word in self.NEGATIVE_WORDS
-                           if word in normalized_text)
+        # Подсчитываем позитивные и негативные слова
+        positive_count = sum(
+            1 for word in self.POSITIVE_WORDS if word in normalized_text
+        )
+        negative_count = sum(
+            1 for word in self.NEGATIVE_WORDS if word in normalized_text
+        )
 
-        # Determine predominant sentiment
+        # Определяем преобладающий сентимент
         if positive_count > negative_count:
             return "positive"
         elif negative_count > positive_count:
@@ -153,6 +171,7 @@ class SentimentService:
         try:
             if additional_data:
                 from app.data.training_data import TRAINING_DATA
+
                 combined_data = TRAINING_DATA + additional_data
                 self.ml_model.train(combined_data)
             else:

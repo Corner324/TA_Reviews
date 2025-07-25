@@ -9,15 +9,15 @@ from app.config import settings
 from app.core.database import create_tables
 from app.core.exceptions import ReviewServiceException
 
-# Create FastAPI application
+# Создаем FastAPI приложение
 app = FastAPI(
     title=settings.project_name,
     version=settings.version,
     description="Service for real-time sentiment analysis of user reviews",
-    debug=settings.debug
+    debug=settings.debug,
 )
 
-# Add CORS middleware
+# Добавляем CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Configure appropriately for production
@@ -26,44 +26,33 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include routers
-app.include_router(
-    reviews_router,
-    prefix=settings.api_v1_prefix,
-    tags=["reviews"]
-)
+# Подключаем роутеры
+app.include_router(reviews_router, prefix=settings.api_v1_prefix, tags=["reviews"])
 
 
-# Global exception handlers
+# Глобальные обработчики исключений
 @app.exception_handler(ReviewServiceException)
 async def review_service_exception_handler(
-    request: Request,
-    exc: ReviewServiceException
+    request: Request, exc: ReviewServiceException
 ) -> JSONResponse:
     """Handle custom review service exceptions."""
-    return JSONResponse(
-        status_code=400,
-        content={"detail": str(exc)}
-    )
+    return JSONResponse(status_code=400, content={"detail": str(exc)})
 
 
 @app.exception_handler(ValueError)
 async def value_error_handler(request: Request, exc: ValueError) -> JSONResponse:
     """Handle validation errors."""
-    return JSONResponse(
-        status_code=400,
-        content={"detail": str(exc)}
-    )
+    return JSONResponse(status_code=400, content={"detail": str(exc)})
 
 
-# Startup event
+# Событие запуска
 @app.on_event("startup")
 async def startup_event():
     """Initialize database tables on startup."""
     create_tables()
 
 
-# Health check endpoint
+# Эндпоинт проверки здоровья
 @app.get("/health")
 async def health_check():
     """Health check endpoint."""

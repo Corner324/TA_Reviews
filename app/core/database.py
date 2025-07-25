@@ -6,13 +6,13 @@ from sqlalchemy.orm import sessionmaker
 from app.config import settings
 from app.models.database import Base
 
-# Create SQLAlchemy engine
+# Создаем SQLAlchemy движок
 engine = create_engine(
     settings.database_url,
-    connect_args={"check_same_thread": False}  # Needed for SQLite
+    connect_args={"check_same_thread": False},  # Необходимо для SQLite
 )
 
-# Create SessionLocal class
+# Создаем класс SessionLocal
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 

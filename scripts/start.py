@@ -8,20 +8,25 @@ from pathlib import Path
 
 def main():
     """Start the FastAPI server using uvicorn."""
-    # Get the project root directory
+    # Получаем корневую директорию проекта
     project_root = Path(__file__).parent.parent
 
-    # Change to project directory
+    # Переходим в директорию проекта
     import os
+
     os.chdir(project_root)
 
-    # Start the server
+    # Запускаем сервер
     cmd = [
-        sys.executable, "-m", "uvicorn",
+        sys.executable,
+        "-m",
+        "uvicorn",
         "app.main:app",
-        "--host", "127.0.0.1",
-        "--port", "8000",
-        "--reload"
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8000",
+        "--reload",
     ]
 
     print("Starting Reviews Sentiment Service...")
@@ -33,6 +38,7 @@ def main():
         subprocess.run(cmd)
     except KeyboardInterrupt:
         print("\nServer stopped.")
+
 
 if __name__ == "__main__":
     main()

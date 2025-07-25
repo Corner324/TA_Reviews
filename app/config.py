@@ -6,7 +6,7 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
 
-    # Database
+    # База данных
     database_url: str = "sqlite:///./reviews.db"
 
     # API
@@ -14,15 +14,15 @@ class Settings(BaseSettings):
     project_name: str = "Reviews Sentiment Service"
     version: str = "1.0.0"
 
-    # Development
+    # Разработка
     debug: bool = False
 
-    # ML Settings
+    # Настройки ML
     use_ml_sentiment: bool = True
 
     class Config:
         env_file = ".env"
 
 
-# Global settings instance
+# Глобальный экземпляр настроек
 settings = Settings()
