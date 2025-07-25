@@ -5,29 +5,30 @@ import subprocess
 import sys
 from pathlib import Path
 
+
 def main():
     """Start the FastAPI server using uvicorn."""
     # Get the project root directory
     project_root = Path(__file__).parent.parent
-    
+
     # Change to project directory
     import os
     os.chdir(project_root)
-    
+
     # Start the server
     cmd = [
-        sys.executable, "-m", "uvicorn", 
-        "app.main:app", 
-        "--host", "127.0.0.1", 
-        "--port", "8000", 
+        sys.executable, "-m", "uvicorn",
+        "app.main:app",
+        "--host", "127.0.0.1",
+        "--port", "8000",
         "--reload"
     ]
-    
+
     print("Starting Reviews Sentiment Service...")
-    print(f"Server will be available at: http://127.0.0.1:8000")
-    print(f"API documentation: http://127.0.0.1:8000/docs")
+    print("Server will be available at: http://127.0.0.1:8000")
+    print("API documentation: http://127.0.0.1:8000/docs")
     print("Press Ctrl+C to stop the server")
-    
+
     try:
         subprocess.run(cmd)
     except KeyboardInterrupt:

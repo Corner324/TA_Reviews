@@ -5,9 +5,9 @@ from pydantic import BaseModel, validator
 
 class ReviewCreate(BaseModel):
     """Schema for creating a new review."""
-    
+
     text: str
-    
+
     @validator('text')
     def text_must_not_be_empty(cls, v):
         """Validate that text is not empty."""
@@ -18,11 +18,11 @@ class ReviewCreate(BaseModel):
 
 class ReviewResponse(BaseModel):
     """Schema for review response."""
-    
+
     id: int
     text: str
     sentiment: str
     created_at: str
-    
+
     class Config:
         from_attributes = True

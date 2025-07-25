@@ -2,9 +2,9 @@
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app.models.database import Base
-from app.config import settings
 
+from app.config import settings
+from app.models.database import Base
 
 # Create SQLAlchemy engine
 engine = create_engine(

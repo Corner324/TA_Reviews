@@ -1,13 +1,13 @@
 """Main FastAPI application."""
 
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
+from app.api.v1.reviews import router as reviews_router
 from app.config import settings
 from app.core.database import create_tables
 from app.core.exceptions import ReviewServiceException
-from app.api.v1.reviews import router as reviews_router
 
 # Create FastAPI application
 app = FastAPI(
@@ -37,7 +37,7 @@ app.include_router(
 # Global exception handlers
 @app.exception_handler(ReviewServiceException)
 async def review_service_exception_handler(
-    request: Request, 
+    request: Request,
     exc: ReviewServiceException
 ) -> JSONResponse:
     """Handle custom review service exceptions."""
