@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  reviews-sentiment:
+    build: .
+    container_name: reviews-sentiment
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=true
+      - USE_ML_SENTIMENT=true
+      - DATABASE_URL=sqlite:///./reviews.db
+    volumes:
+      - ./app:/app/app  # Монтируем исходный код для горячей перезагрузки
+      - reviews_data:/app/app/ml  # Сохраняем ML модели
+      - reviews_db:/app  # Сохраняем базу данных
+    restart: unless-stopped
+
+volumes:
+  reviews_data:
+  reviews_db:
